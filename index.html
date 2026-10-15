@@ -5,31 +5,99 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Sam Mathews - Mechanical Engineering Portfolio</title>
   <style>
-    :root { --bg:#f6f4ef; --fg:#1d1d1f; --accent:#b3261e; --muted:#6b6b6b; }
-    body { margin:0; font-family: system-ui, sans-serif; background:var(--bg); color:var(--fg); line-height:1.5; }
-    main { max-width: 900px; margin: 0 auto; padding: 32px 16px 64px; }
+    :root { --bg:#f6f4ef; --fg:#1d1d1f; --accent:#b3261e; --muted:#6b6b6b; --card:#fff; --line:#e2e0da; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family: system-ui, sans-serif; background:var(--bg); color:var(--fg); line-height:1.6; }
+    main { max-width: 900px; margin: 0 auto; padding: 40px 16px 64px; }
     a { color: var(--accent); }
-    h1 { font-size: 2.2rem; margin-bottom: 4px; }
-    .sub { color: var(--muted); margin-top: 0; }
-    .grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap:16px; margin-top:24px; }
-    .card { background:#fff; border:1px solid #e2e0da; border-radius:10px; padding:16px; text-decoration:none; color:inherit; }
-    .card h3 { margin:0 0 6px; color:var(--fg); }
+    h1 { font-size: 2.4rem; margin: 0 0 4px; }
+    .tagline { color: var(--muted); margin: 0 0 28px; }
+
+    /* Personal statement */
+    .statement { background:var(--card); border:1px solid var(--line); border-left:4px solid var(--accent); border-radius:10px; padding:20px 24px; margin-bottom:28px; }
+    .statement h2 { margin:0 0 8px; font-size:1.2rem; }
+    .statement p { margin:0; }
+    .placeholder { color:var(--muted); font-style:italic; }
+
+    /* Section buttons */
+    .tabs { display:flex; gap:12px; flex-wrap:wrap; margin-bottom:24px; }
+    .tab { flex:1 1 220px; padding:14px 18px; font:inherit; font-weight:600; font-size:1.05rem; cursor:pointer;
+           background:var(--card); color:var(--fg); border:2px solid var(--line); border-radius:10px; }
+    .tab:hover { border-color:var(--accent); }
+    .tab[aria-selected="true"] { background:var(--accent); color:#fff; border-color:var(--accent); }
+    .tab:focus-visible { outline:3px solid var(--fg); outline-offset:2px; }
+
+    /* Panels */
+    .panel[hidden] { display:none; }
+    .grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap:16px; }
+    .card { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:16px; text-decoration:none; color:inherit; display:block; }
+    a.card:hover { border-color:var(--accent); }
+    .card h3 { margin:0 0 6px; }
     .card p { margin:0; color:var(--muted); font-size:.95rem; }
+    .prompt { text-align:center; color:var(--muted); padding:8px 0 24px; }
   </style>
 </head>
 <body>
 <main>
   <h1>Sam Mathews</h1>
-  <p class="sub">Mechanical engineering student at UT Dallas. Hands-on builds in mechanisms, circuits, and embedded code.</p>
+  <p class="tagline">Mechanical engineering student at UT Dallas</p>
 
-  <h2>Projects</h2>
-  <div class="grid">
-    <a class="card" href="projects/ninja-clash/index.html">
-      <h3>Ninja Clash</h3>
-      <p>8-bit side-view fight on an ESP32 with an OLED display, four buttons, and custom sprites.</p>
-    </a>
+  <section class="statement" id="statement">
+    <h2>Personal statement</h2>
+    <!-- Replace the line below with your own statement (a short paragraph or two). -->
+    <p class="placeholder">Write a short paragraph about who you are, what you build, and what you want to do next.</p>
+  </section>
+
+  <div class="tabs" role="tablist" aria-label="Portfolio sections">
+    <button class="tab" role="tab" id="tab-projects" aria-controls="projects" aria-selected="false" data-target="projects">Engineering Projects</button>
+    <button class="tab" role="tab" id="tab-hobbies" aria-controls="hobbies" aria-selected="false" data-target="hobbies">Hobbies &amp; Interests</button>
   </div>
 
+  <p class="prompt" id="prompt">Choose a section above to explore.</p>
+
+  <section class="panel" id="projects" role="tabpanel" aria-labelledby="tab-projects" hidden>
+    <div class="grid">
+      <a class="card" href="projects/ninja-clash/index.html">
+        <h3>Ninja Clash</h3>
+        <p>8-bit side-view fight on an ESP32 with an OLED display, four buttons, and custom sprites.</p>
+      </a>
+      <!-- Copy the <a class="card"> block above to add more projects. -->
+    </div>
+  </section>
+
+  <section class="panel" id="hobbies" role="tabpanel" aria-labelledby="tab-hobbies" hidden>
+    <div class="grid">
+      <div class="card">
+        <h3>Hobby or interest</h3>
+        <p class="placeholder">Add a short line about it.</p>
+      </div>
+      <!-- Copy the <div class="card"> block above to add more. -->
+    </div>
+  </section>
+
+  <noscript><style>.panel[hidden]{display:block}.tabs,.prompt{display:none}</style></noscript>
 </main>
+
+<script>
+  (function () {
+    var tabs = document.querySelectorAll('.tab');
+    var panels = document.querySelectorAll('.panel');
+    var prompt = document.getElementById('prompt');
+
+    function show(id) {
+      tabs.forEach(function (t) { t.setAttribute('aria-selected', String(t.dataset.target === id)); });
+      panels.forEach(function (p) { p.hidden = p.id !== id; });
+      prompt.hidden = true;
+      if (location.hash !== '#' + id) history.replaceState(null, '', '#' + id);
+    }
+
+    tabs.forEach(function (t) {
+      t.addEventListener('click', function () { show(t.dataset.target); });
+    });
+
+    var start = location.hash.replace('#', '');
+    if (start === 'projects' || start === 'hobbies') show(start);
+  })();
+</script>
 </body>
 </html>
