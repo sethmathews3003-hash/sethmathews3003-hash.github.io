@@ -4,43 +4,14 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Sam Mathews - Mechanical Engineering Portfolio</title>
-  <style>
-    :root { --bg:#f6f4ef; --fg:#1d1d1f; --accent:#b3261e; --muted:#6b6b6b; --card:#fff; --line:#e2e0da; }
-    * { box-sizing: border-box; }
-    body { margin:0; font-family: system-ui, sans-serif; background:var(--bg); color:var(--fg); line-height:1.6; }
-    main { max-width: 900px; margin: 0 auto; padding: 40px 16px 64px; }
-    a { color: var(--accent); }
-    h1 { font-size: 2.4rem; margin: 0 0 4px; }
-    .tagline { color: var(--muted); margin: 0 0 28px; }
-
-    /* Personal statement */
-    .statement { background:var(--card); border:1px solid var(--line); border-left:4px solid var(--accent); border-radius:10px; padding:20px 24px; margin-bottom:28px; }
-    .statement h2 { margin:0 0 8px; font-size:1.2rem; }
-    .statement p { margin:0; }
-    .placeholder { color:var(--muted); font-style:italic; }
-
-    /* Section buttons */
-    .tabs { display:flex; gap:12px; flex-wrap:wrap; margin-bottom:24px; }
-    .tab { flex:1 1 220px; padding:14px 18px; font:inherit; font-weight:600; font-size:1.05rem; cursor:pointer;
-           background:var(--card); color:var(--fg); border:2px solid var(--line); border-radius:10px; }
-    .tab:hover { border-color:var(--accent); }
-    .tab[aria-selected="true"] { background:var(--accent); color:#fff; border-color:var(--accent); }
-    .tab:focus-visible { outline:3px solid var(--fg); outline-offset:2px; }
-
-    /* Panels */
-    .panel[hidden] { display:none; }
-    .grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap:16px; }
-    .card { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:16px; text-decoration:none; color:inherit; display:block; }
-    a.card:hover { border-color:var(--accent); }
-    .card h3 { margin:0 0 6px; }
-    .card p { margin:0; color:var(--muted); font-size:.95rem; }
-    .prompt { text-align:center; color:var(--muted); padding:8px 0 24px; }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<main>
-  <h1>Sam Mathews</h1>
+<header class="hero"><div class="hero-inner">
+  <h1>Sam <span>Mathews</span></h1>
   <p class="tagline">Mechanical engineering student at UT Dallas</p>
+</div></header>
+<main>
 
   <section class="statement" id="statement">
     <h2>Personal statement</h2>
