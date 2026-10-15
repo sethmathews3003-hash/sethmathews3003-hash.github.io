@@ -137,4 +137,29 @@ code { padding: 1px 5px; }
   padding: 16px 24px;
 }
 .sub { color: var(--muted); margin-top: 4px; }
+
+/* Status badge */
+.badge {
+  display: inline-block;
+  margin-top: 16px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--blue);
+  color: #fff;
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+.card .badge { margin: 0 0 8px; }
+
+/* Tables */
+.table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; background: var(--card); }
+table { width: 100%; border-collapse: collapse; font-size: .95rem; }
+th, td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { color: #fff; background: rgba(215,25,32,.35); font-weight: 700; }
+tbody tr:nth-child(even) { background: rgba(43,95,217,.08); }
+tfoot td { border-bottom: none; background: rgba(43,95,217,.18); }
+.calc p { margin: 8px 0; }
+ol li, ul li { margin-bottom: 6px; }
 main > h1 { margin-top: 8px; }

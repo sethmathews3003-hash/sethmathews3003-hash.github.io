@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Web-Shooter - Wrist Launcher with Auto-Retract</title>
+  <link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+<main>
+  <p><a class="back" href="../../index.html#projects">&larr; Back to portfolio</a></p>
+  <span class="badge">In progress</span>
+  <h1>Web-Shooter</h1>
+  <p class="sub">A wrist-mounted, spring-launched tether with motorized auto-retract, built on an ESP32. Designed, tested, and measured like a real product.</p>
+
+  <section class="notes" id="about">
+    <p>I wanted to build something I'd actually want to wear: my own take on Spider-Man's web-shooter. Underneath the fun, it's a compact mechatronic system with a spring launch, a one-way clutch spool, closed-loop motor control, and sensor-based auto-stop, all in a package light enough to wear on a wrist.</p>
+    <p>My goal is to practice the full engineering loop: set specs, predict performance with hand calculations and FEA, build, measure, and improve the design using statistics.</p>
+  </section>
+
+  <h2>Design targets</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Requirement</th><th>Target</th><th>How it's verified</th></tr></thead>
+      <tbody>
+        <tr><td>Wrist unit mass</td><td>&lt; 300 g</td><td>Scale</td></tr>
+        <tr><td>Launch speed</td><td>5.0 &plusmn; 0.5 m/s</td><td>IR break-beam chronograph, 30 shots, Cpk</td></tr>
+        <tr><td>Reach</td><td>Magnetic dart sticks to a steel target at 2 m</td><td>Hit rate over 30 shots</td></tr>
+        <tr><td>Retract time</td><td>2 m in &lt; 5 s</td><td>Encoder log</td></tr>
+        <tr><td>Auto-stop on docking</td><td>30 / 30 trials</td><td>Motor current sensing</td></tr>
+        <tr><td>Safety</td><td>Launch energy &lt; 0.5 J, soft tip, tethered</td><td>Calculated from measured speed</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>How it works</h2>
+  <ol>
+    <li><strong>Launch:</strong> a compression spring pushes a 3D-printed dart with a magnet tip. A servo releases a sear latch, so the servo only moves a catch and never carries the full spring load.</li>
+    <li><strong>Payout:</strong> the tether unwinds from a spool that runs on a <strong>one-way clutch bearing</strong>, so the spool free-wheels while the line pays out, with no clutch to actuate.</li>
+    <li><strong>Retract:</strong> the same clutch locks in the other direction, and an encoder gear motor reels the line in under PID speed control.</li>
+    <li><strong>Auto-stop:</strong> a current sensor detects the load spike when the dart docks and stops the motor.</li>
+  </ol>
+
+  <h2>Key hand calculations (planned)</h2>
+  <div class="notes calc">
+    <p><strong>Spring.</strong> Dart mass &asymp; 15 g at 5 m/s &rarr; KE = &frac12;mv&sup2; &asymp; 0.19 J. Assuming ~50% spring-to-dart efficiency, the spring must store &asymp; 0.38 J. With 40 mm compression, k = 2E/x&sup2; &asymp; 470 N/m, and the peak latch force is kx &asymp; 19 N.</p>
+    <p><strong>Gear ratio.</strong> Retracting 2 m in under 5 s needs v &ge; 0.4 m/s. With a 40 mm spool, n = 60v/(&pi;d) &asymp; 190 rpm minimum, so a ~50:1 N20 gear motor rated above 200 rpm fits.</p>
+    <p><strong>Resolution.</strong> 14 encoder counts per motor revolution &times; 50:1 = 700 counts per spool revolution, which works out to &asymp; 0.18 mm of line per count.</p>
+  </div>
+
+  <h2>Test plan</h2>
+  <ul>
+    <li><strong>Launch efficiency:</strong> measured speed vs. stored spring energy, at three spring compressions.</li>
+    <li><strong>Repeatability:</strong> 30 shots, with mean, standard deviation, and Cpk against the 5.0 &plusmn; 0.5 m/s spec.</li>
+    <li><strong>FEA:</strong> stress in the latch and wrist mount under the 19 N spring load, with a target safety factor &ge; 2.</li>
+    <li><strong>Controls:</strong> retract speed step response before and after PID tuning.</li>
+    <li><strong>Design for assembly:</strong> count the parts and time the assembly, then cut both in a redesign using keyed (poka-yoke) parts that only fit one way.</li>
+  </ul>
+
+  <h2>Parts list</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Part</th><th>Qty</th><th>Est. cost</th><th>Purpose</th></tr></thead>
+      <tbody>
+        <tr><td>ESP32 dev board</td><td>1</td><td>owned</td><td>Controller</td></tr>
+        <tr><td>N20 6 V gear motor with magnetic encoder (~50:1)</td><td>1</td><td>$15&ndash;17</td><td>Retract spool, line length and speed</td></tr>
+        <tr><td>Motor driver (DRV8833 or TB6612FNG)</td><td>1</td><td>$5&ndash;8</td><td>Drives the motor</td></tr>
+        <tr><td>INA219 current sensor</td><td>1</td><td>$6&ndash;10</td><td>Detects docking, auto-stop</td></tr>
+        <tr><td>MG90S micro servo</td><td>1</td><td>$5&ndash;8</td><td>Releases the launch latch</td></tr>
+        <tr><td>HF0612 one-way clutch bearing (6&times;10&times;12 mm)</td><td>2</td><td>~$11</td><td>Free payout, locked retract (1 spare)</td></tr>
+        <tr><td>Small ball bearings (6 mm bore)</td><td>pack</td><td>~$8</td><td>Spool support</td></tr>
+        <tr><td>6 mm steel shaft or dowel pins</td><td>1</td><td>~$6</td><td>Spool axle</td></tr>
+        <tr><td>Compression spring assortment</td><td>1</td><td>~$10</td><td>Launch spring options</td></tr>
+        <tr><td>Braided fishing line, 20&ndash;30 lb</td><td>1</td><td>~$10</td><td>Tether</td></tr>
+        <tr><td>Neodymium disc magnets</td><td>pack</td><td>~$8</td><td>Dart tip</td></tr>
+        <tr><td>IR break-beam sensor pair</td><td>2</td><td>~$6</td><td>Chronograph for launch speed</td></tr>
+        <tr><td>Buttons, slide switch, wires, M3 screws, heat-set inserts</td><td>&mdash;</td><td>~$12</td><td>Controls and assembly</td></tr>
+        <tr><td>Wrist brace or Velcro strap</td><td>1</td><td>$8&ndash;12</td><td>Mounting</td></tr>
+        <tr><td>USB power bank (5 V)</td><td>1</td><td>owned or ~$20</td><td>Power</td></tr>
+        <tr><td>Red and blue PLA/PETG, TPU</td><td>&mdash;</td><td>owned or ~$40</td><td>Housing, dart, spool</td></tr>
+        <tr><td>Safety glasses</td><td>1</td><td>~$8</td><td>Testing</td></tr>
+      </tbody>
+      <tfoot><tr><td colspan="2"><strong>Estimated total</strong></td><td colspan="2"><strong>~$120</strong> with filament and power bank on hand; up to ~$200 buying everything</td></tr></tfoot>
+    </table>
+  </div>
+
+  <h2>Timeline</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Weeks</th><th>Dates</th><th>Milestone</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Oct 19 &ndash; 25</td><td>Specs, hand calculations, order parts</td></tr>
+        <tr><td>2&ndash;3</td><td>Oct 26 &ndash; Nov 8</td><td>CAD v1 (housing, latch, spool, dart), FEA, first prints</td></tr>
+        <tr><td>4</td><td>Nov 9 &ndash; 15</td><td>Launch tests, build chronograph, speed vs. compression</td></tr>
+        <tr><td>5&ndash;6</td><td>Nov 16 &ndash; 29</td><td>Retract: encoder, PID speed control, current auto-stop</td></tr>
+        <tr><td>7</td><td>Nov 30 &ndash; Dec 6</td><td>Integrate on wrist, v2 print for weight</td></tr>
+        <tr><td>8&ndash;9</td><td>Dec 7 &ndash; 20</td><td>Finals (light): 30-shot repeatability runs, analysis</td></tr>
+        <tr><td>10&ndash;11</td><td>Dec 21 &ndash; Jan 3</td><td>Design-for-assembly pass, v3</td></tr>
+        <tr><td>12&ndash;13</td><td>Jan 4 &ndash; 17</td><td>Final tests, video, write-up</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Safety</h2>
+  <p>The launch energy is kept below 0.5 J, the dart has a soft tip, and it's always tethered. Testing is done with eye protection and the launcher is never aimed at people.</p>
+
+  <h2>Build log</h2>
+  <section class="notes" id="build-log">
+    <!-- Add dated entries as you go, e.g.:
+         <p><strong>Nov 12:</strong> First launch test: 4.6 m/s at 40 mm compression...</p> -->
+    <p class="placeholder">Updates, photos, and test results will be posted here as the build progresses.</p>
+  </section>
+</main>
+</body>
+</html>
