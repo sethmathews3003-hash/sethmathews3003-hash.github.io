@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ninja Clash - ESP32 8-bit Game</title>
+  <style>
+    :root { --bg:#f6f4ef; --fg:#1d1d1f; --accent:#b3261e; --muted:#6b6b6b; }
+    body { margin:0; font-family: system-ui, sans-serif; background:var(--bg); color:var(--fg); line-height:1.5; }
+    main { max-width: 860px; margin: 0 auto; padding: 24px 16px 64px; }
+    a { color: var(--accent); }
+    h1 { font-size: 2rem; margin-bottom: 4px; }
+    .sub { color: var(--muted); margin-top: 0; }
+    img { max-width: 100%; border-radius: 8px; border: 1px solid #ddd; }
+    pre { background:#1d1d1f; color:#f6f4ef; padding:16px; border-radius:8px; overflow-x:auto; font-size:.85rem; }
+    .btn { display:inline-block; margin:4px 8px 4px 0; padding:8px 14px; border-radius:6px; background:var(--accent); color:#fff; text-decoration:none; }
+  </style>
+</head>
+<body>
+<main>
+  <p><a href="../../index.html">&larr; Back to portfolio</a></p>
+  <h1>Ninja Clash</h1>
+  <p class="sub">An 8-bit side-view fight on an ESP32 with a 128x64 OLED. One hero against a squad of ninjas that rush in and throw shuriken.</p>
+
+  <h2>The build</h2>
+  <p>Four buttons (left, right, jump, attack) and an SSD1306 OLED on a breadboard, driven by an ESP32. The OLED talks over I2C on GPIO 21 (SDA) and GPIO 22 (SCL).</p>
+  <img src="files/wiring.png" alt="Breadboard wiring of the ESP32, OLED and four buttons">
+
+  <h2>Wiring</h2>
+  <ul>
+    <li>OLED SDA &rarr; GPIO 21, SCL &rarr; GPIO 22, VCC &rarr; 3V3, GND &rarr; GND</li>
+    <li>LEFT &rarr; GPIO 25, RIGHT &rarr; GPIO 26, JUMP &rarr; GPIO 27, ATTACK &rarr; GPIO 14</li>
+    <li>Each button sits between its pin and GND (internal pull-ups)</li>
+  </ul>
+
+  <h2>Code</h2>
+  <p>Libraries: Adafruit GFX and Adafruit SSD1306.</p>
+  <p>
+    <a class="btn" href="files/ninja_clash.ino">Download ninja_clash.ino</a>
+  </p>
+</main>
+</body>
+</html>
