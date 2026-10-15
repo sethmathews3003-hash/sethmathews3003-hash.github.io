@@ -14,7 +14,7 @@
 
 body {
   margin: 0;
-  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   color: var(--fg);
   line-height: 1.6;
   background-color: var(--bg);
@@ -39,7 +39,7 @@ a { color: var(--red-bright); }
 }
 .hero-inner { max-width: 900px; margin: 0 auto; }
 h1 {
-  font-family: Impact, "Arial Narrow Bold", "Helvetica Neue", Arial, sans-serif;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: clamp(2.4rem, 8vw, 3.6rem);
   letter-spacing: .04em;
   text-transform: uppercase;
@@ -49,10 +49,10 @@ h1 {
 h1 span { color: var(--red-bright); }
 .tagline { color: var(--muted); margin: 8px 0 0; font-size: 1.05rem; }
 h2 {
-  font-family: Impact, "Arial Narrow Bold", "Helvetica Neue", Arial, sans-serif;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   letter-spacing: .05em;
   text-transform: uppercase;
-  font-weight: normal;
+  font-weight: 700;
 }
 
 /* Personal statement */
